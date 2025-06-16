@@ -1,15 +1,15 @@
 <% layout("/layouts/boilerplate") %>
 <script>
     const mapToken="<%=process.env.MAP_TOKEN%>";
-    const listing=<%- JSON.stringify(listing)%>;
+    const listing="<%- JSON.stringify(listing)%>";
 </script>
     <div class="row mt-3">
-        <div class="col-8 offset-3">
+        <div class="col-12 col-md-8 offset-md-2">
             <h3>
                 <%=listing.title%>
             </h3>
         </div>
-        <div class="card col-6 offset-3 show-card listing-card">
+        <div class="card col-12 col-md-6 offset-md-3 show-card listing-card">
             <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing_image">
             <div class="card-body">
                 <p class="card-text">Owned by <i>
@@ -30,16 +30,16 @@
         <br>
 
         <% if(currUser && listing.owner._id.equals(currUser._id)) {%>
-            <div class="btns">
-                <a href="/listings/<%=listing.id%>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+            <div class="btns flex-column flex-md-row">
+                <a href="/listings/<%=listing.id%>/edit" class="btn btn-dark col-12 col-md-2 offset-md-3 edit-btn mb-2 mb-md-0">Edit</a>
 
-                <form method="post" action="/listings/<%=listing._id%>?_method=DELETE">
-                    <button class="btn btn-dark offset-5">Delete</button>
+                <form method="post" action="/listings/<%=listing._id%>?_method=DELETE" class="col-12 col-md-2">
+                    <button class="btn btn-dark w-100">Delete</button>
                 </form>
             </div>
             <%}%>
 
-                <div class="col-8 offset-3 mb-3">
+                <div class="col-12 col-md-8 offset-md-2 mb-3">
                     <% if(currUser) {%>
                         <hr>
                         <h4>Leave a Review</h4>
@@ -69,9 +69,8 @@
                                 <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control"
                                     required></textarea>
                                 <div class="invalid-feedback">Please add some comments for review</div>
-                                <!--comment show korba -->
                             </div>
-                            <button class="btn btn-outline-dark">Submit</button>
+                            <button class="btn btn-outline-dark w-100 w-md-auto">Submit</button>
                         </form>
                         <hr>
                         <%}%>
@@ -80,7 +79,7 @@
                             <div class="row">
                                 <p><b>All Reviews</b></p>
                                 <% for(review of listing.reviews) { %>
-                                    <div class="card col-5 ms-3 mb-3">
+                                    <div class="card col-12 col-md-5 ms-md-3 mb-3">
                                         <div class="card-body">
                                             <h5 class="card-title">@<%=review.author.username%>
                                             </h5>
@@ -92,7 +91,7 @@
 
                                             <form class="mb-3" method="POST"
                                                 action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-                                                <button class="btn btn-sm btn-dark">Delete</button>
+                                                <button class="btn btn-sm btn-dark w-100 w-md-auto">Delete</button>
                                             </form>
                                         </div>
                                     </div>
@@ -100,9 +99,35 @@
                             </div>
                         <%}%>
                 </div>
-                <div class="col-8 offset-3 mb-3">
+                <div class="col-12 col-md-8 offset-md-2 mb-3">
                     <h3>Where you'll be</h3>
                     <div id="map"></div>
                 </div>
     </div>
     <script src="/js/map.js"></script>
+    <style>
+    @media (max-width: 600px) {
+        .show-card {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .show-img {
+            height: 180px !important;
+        }
+        .btns {
+            flex-direction: column !important;
+            gap: 0.5rem;
+        }
+        .btns .btn, .btns form {
+            width: 100% !important;
+        }
+        .card {
+            margin-bottom: 1rem;
+        }
+        #map {
+            height: 200px !important;
+            width: 100vw !important;
+            min-width: 0;
+        }
+    }
+    </style>
